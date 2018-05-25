@@ -348,7 +348,9 @@ void MainWindow::disconnected(bool onceConnected)
         QMessageBox(QMessageBox::Information, "알림", "연결에 실패하였습니다.").exec();
 }
 
-void MainWindow::processData(float a1, float a2, float a3, float a4)
+// a1: Top, a2:Bottom, a3:Left, a4:Right
+// sensor: Left, Right, Top, Bottom
+void MainWindow::processData(float a3, float a4, float a1, float a2)
 {
     int weight = a1 + a2 + a3 + a4;
     if((weight > 10) && !init)
@@ -384,11 +386,12 @@ void MainWindow::processData(float a1, float a2, float a3, float a4)
     */
 	// 시계방향 45도 회전
     double y = boardplot_max_radius * (a1 + a3 - (a2 + a4)) / (a1 + a2 + a3 + a4);
-    double x = boardplot_max_radius * (a1 + a2 - (a3 + a4)) / (a1 + a2 + a3 + a4);
+    double x = boardplot_max_radius * (a1 + a4 - (a2 + a3)) / (a1 + a2 + a3 + a4);
+
     if(weight<1)
     {
         x = 0;
-        y=0;
+        y = 0;
     }
     printf("a1: %f  a2: %f  a3: %f  a4: %f\n", a1, a2, a3, a4);
     printf("x: %f  y: %f\n", x, y);
